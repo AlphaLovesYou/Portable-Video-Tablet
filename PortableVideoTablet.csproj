@@ -11,6 +11,7 @@
         <AssemblyName>PortableVideoTablet</AssemblyName>
         <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,38 +34,38 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="0Harmony">
-          <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\ChilloutVR\MelonLoader\0Harmony.dll</HintPath>
+          <HintPath>3rdparty\ml\0Harmony.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp">
-          <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\Assembly-CSharp.dll</HintPath>
+          <HintPath>3rdparty\Managed\Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="MelonLoader">
-          <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\ChilloutVR\MelonLoader\MelonLoader.dll</HintPath>
+          <HintPath>3rdparty\ml\MelonLoader.dll</HintPath>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
         <Reference Include="UIExpansionKit">
-          <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\ChilloutVR\Mods\UIExpansionKit.dll</HintPath>
+          <HintPath>3rdparty\UIExpansionKit.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine">
-          <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\UnityEngine.dll</HintPath>
+          <HintPath>3rdparty\Managed\UnityEngine.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.AssetBundleModule">
-          <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+          <HintPath>3rdparty\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.AudioModule">
-          <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+          <HintPath>3rdparty\Managed\UnityEngine.AudioModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.CoreModule">
-          <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+          <HintPath>3rdparty\Managed\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.UI">
-          <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\UnityEngine.UI.dll</HintPath>
+          <HintPath>3rdparty\Managed\UnityEngine.UI.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.UIModule">
-          <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+          <HintPath>3rdparty\Managed\UnityEngine.UIModule.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
