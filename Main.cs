@@ -76,7 +76,7 @@ namespace PortableVideoTablet
 
         private bool LoadAssets()
         {
-            using (var assetStream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("PortableVideoTablet.TabletAsset"))
+            using (var assetStream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("PortableVideoTablet.tablet"))
             {
                 if (assetStream != null)
                 {
@@ -97,6 +97,7 @@ namespace PortableVideoTablet
 
             return true;
         }
+        
     }
         
     [HarmonyPatch(typeof(CVRVideoPlayer))]
@@ -120,6 +121,7 @@ namespace PortableVideoTablet
             {
                 Main.Log.Error(e);
             }
+            
         }
 
         [HarmonyPatch("OnDestroy")]
@@ -140,4 +142,5 @@ namespace PortableVideoTablet
             }
         }
     }
+    
 }
