@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using ABI_RC.Core.Savior;
 using ABI.CCK.Components;
+using BTKUILib.UIObjects;
 using HarmonyLib;
 using MelonLoader;
 using UIExpansionKit.API;
@@ -50,18 +51,24 @@ namespace PortableVideoTablet
                 return;
             }
             
-            if(MelonBase.RegisteredMelons.Any(x => x.Info.Name.Equals("UI Expansion Kit")))
-                SetupUIX();
+            if(MelonBase.RegisteredMelons.Any(x => x.Info.Name.Equals("BTKUILib")))
+                SetupBTKUI();
             else
-                Log.Error("You must have UIExpansionKit installed to use Portable Video Tablet!");
+                Log.Error("You must have BTKUILib installed to use Portable Video Tablet!");
         }
 
-        private void SetupUIX()
+        private void SetupBTKUI()
         {
-            var uixMenu = ExpansionKitApi.GetSettingsCategory(PrefCategory);
-            uixMenu.AddLabel("Controls");
-            _toggleButton = uixMenu.AddToggleButton("Show Tablet", ToggleTablet);
-            _respawnButton = uixMenu.AddSimpleButton("Respawn Tablet", RespawnTablet);
+            //root page stuff
+            var rootpage = new Page("Portable Video Tablet", "", true);
+            rootpage.MenuTitle = "Portable Video Player";
+            var category = rootpage.AddCategory("Controls");
+            
+            //button stuff
+            var respawn = category.AddButton("Respawn tablet", "", "respawn video tablet");
+            respawn.OnPress += RespawnTablet;
+            var toggletablet = category.AddToggle("Toggle tablet", "Toggle tablet on and off.", false);
+            toggletablet.OnValueUpdated += ToggleTablet;
         }
 
         private void ToggleTablet(bool state)
