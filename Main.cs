@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+    using ABI_RC.Core.Player;
 using ABI_RC.Core.Savior;
 using ABI.CCK.Components;
 using BTKUILib.UIObjects;
@@ -10,6 +11,7 @@ using MelonLoader;
 using UIExpansionKit.API;
 using UIExpansionKit.API.Controls;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace PortableVideoTablet
 {
@@ -33,6 +35,7 @@ namespace PortableVideoTablet
         //Assetbundle Stuff
         private AssetBundle _bundle;
         private GameObject _tabletPrefab;
+        private GameObject _tabletInstantiate;
         
         private const string PrefCategory = "PortableVideoTablet";
 
@@ -56,31 +59,40 @@ namespace PortableVideoTablet
             else
                 Log.Error("You must have BTKUILib installed to use Portable Video Tablet!");
         }
-
+        //BTKUI stuff
         private void SetupBTKUI()
         {
-            //root page stuff
-            var rootpage = new Page("Portable Video Tablet", "", true);
+            //Root page creation
+            var rootpage = new Page("PortableVideoTablet", "Video Tablet", true,"");
             rootpage.MenuTitle = "Portable Video Player";
             var category = rootpage.AddCategory("Controls");
             
-            //button stuff
+            //Tablet control buttons
             var respawn = category.AddButton("Respawn tablet", "", "respawn video tablet");
             respawn.OnPress += RespawnTablet;
             var toggletablet = category.AddToggle("Toggle tablet", "Toggle tablet on and off.", false);
             toggletablet.OnValueUpdated += ToggleTablet;
         }
-
+        //
         private void ToggleTablet(bool state)
         {
-            
+            if (_tabletInstantiate == null)
+            {
+               _tabletInstantiate= Object.Instantiate(_tabletPrefab);
+               Object.DontDestroyOnLoad(_tabletInstantiate);
+            }
+            _tabletInstantiate.SetActive(state);
+            RespawnTablet();
         }
 
         private void RespawnTablet()
         {
-            
+            var position = PlayerSetup.Instance.transform.position;
+            position.z += 1f;
+            _tabletInstantiate.transform.position = position;
         }
-
+        
+        //Asset loading things
         private bool LoadAssets()
         {
             using (var assetStream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("PortableVideoTablet.tablet"))
@@ -106,7 +118,7 @@ namespace PortableVideoTablet
         }
         
     }
-        
+    //Harmony things
     [HarmonyPatch(typeof(CVRVideoPlayer))]
     class CVRVideoPatch
     {
