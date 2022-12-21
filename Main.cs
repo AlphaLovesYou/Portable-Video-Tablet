@@ -117,9 +117,11 @@ namespace PortableVideoTablet
 
         private void RespawnTablet()
         {
-            var position = PlayerSetup.Instance.transform.position;
+            Vector3 position;
+            position = MetaPort.Instance.isUsingVr ? PlayerSetup.Instance.vrCamera.transform.position : PlayerSetup.Instance.desktopCamera.transform.position;
             position.z += 1f;
             _tabletInstantiate.transform.position = position;
+            _tabletInstantiate.transform.rotation = new Quaternion(0, 180, 0, 0);
         }
 
         private void VideoPlayerSelect()
