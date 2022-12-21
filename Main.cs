@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-    using ABI_RC.Core.Player;
+using System.Reflection;
+using ABI_RC.Core.Player;
 using ABI_RC.Core.Savior;
 using ABI.CCK.Components;
+using BTKUILib;
 using BTKUILib.UIObjects;
+using BTKUILib.UIObjects.Objects;
 using HarmonyLib;
 using MelonLoader;
 using UIExpansionKit.API;
@@ -36,7 +39,11 @@ namespace PortableVideoTablet
         private AssetBundle _bundle;
         private GameObject _tabletPrefab;
         private GameObject _tabletInstantiate;
-        
+        private MultiSelection _videoPlayer;
+        private MeshRenderer _screenRender;
+        private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+
+
         private const string PrefCategory = "PortableVideoTablet";
 
         public override void OnApplicationStart()
@@ -67,18 +74,41 @@ namespace PortableVideoTablet
             rootpage.MenuTitle = "Portable Video Player";
             var category = rootpage.AddCategory("Controls");
             
+            
             //Tablet control buttons
             var respawn = category.AddButton("Respawn tablet", "", "respawn video tablet");
             respawn.OnPress += RespawnTablet;
-            var toggletablet = category.AddToggle("Toggle tablet", "Toggle tablet on and off.", false);
-            toggletablet.OnValueUpdated += ToggleTablet;
+            
+            var toggleTablet = category.AddToggle("Toggle tablet", "Toggle tablet on and off.", false);
+            toggleTablet.OnValueUpdated += ToggleTablet;
+            
+            _videoPlayer = new MultiSelection("Video Players", null, 0);
+            _videoPlayer.OnOptionUpdated += OnVideoSelected;
+            var players = category.AddButton("Video Players", "", "Change currently displayed video player.");
+            players.OnPress += VideoPlayerSelect;
         }
-        //
+
+        private void OnVideoSelected(int option)
+        {
+            try
+            {
+                var videoPlayer = VideoPlayers[option];
+
+                _screenRender.material.SetTexture(MainTex,videoPlayer.ProjectionTexture);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
+
+        //button controlls
         private void ToggleTablet(bool state)
         {
             if (_tabletInstantiate == null)
             {
                _tabletInstantiate= Object.Instantiate(_tabletPrefab);
+               _screenRender = _tabletInstantiate.transform.Find("video").GetComponent<MeshRenderer>();
                Object.DontDestroyOnLoad(_tabletInstantiate);
             }
             _tabletInstantiate.SetActive(state);
@@ -90,6 +120,15 @@ namespace PortableVideoTablet
             var position = PlayerSetup.Instance.transform.position;
             position.z += 1f;
             _tabletInstantiate.transform.position = position;
+        }
+
+        private void VideoPlayerSelect()
+        {
+            var playerList = VideoPlayers.Select(videoPlayer => videoPlayer.name).ToList();
+
+            _videoPlayer.Options = playerList.ToArray();
+            _videoPlayer.SelectedOption = 0;
+            QuickMenuAPI.OpenMultiSelect(_videoPlayer);
         }
         
         //Asset loading things
