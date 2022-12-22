@@ -42,7 +42,7 @@ namespace PortableVideoTablet
         private MultiSelection _videoPlayer;
         private MeshRenderer _screenRender;
         private static readonly int MainTex = Shader.PropertyToID("_MainTex");
-
+     
 
         private const string PrefCategory = "PortableVideoTablet";
 
@@ -117,11 +117,16 @@ namespace PortableVideoTablet
 
         private void RespawnTablet()
         {
+            //if this shit works first try im buying another pair of thigh highs
+            var camera = MetaPort.Instance.isUsingVr
+                ? PlayerSetup.Instance.vrCamera.transform
+                : PlayerSetup.Instance.desktopCamera.transform;
             Vector3 position;
-            position = MetaPort.Instance.isUsingVr ? PlayerSetup.Instance.vrCamera.transform.position : PlayerSetup.Instance.desktopCamera.transform.position;
-            position.z += 1f;
+            position = camera.position +
+                       camera.forward;
             _tabletInstantiate.transform.position = position;
-            _tabletInstantiate.transform.rotation = new Quaternion(0, 180, 0, 0);
+            _tabletInstantiate.transform.LookAt(camera);
+            //im going to propose to whoever made LookAt and give them the best head of their life.
         }
 
         private void VideoPlayerSelect()
@@ -202,5 +207,4 @@ namespace PortableVideoTablet
             }
         }
     }
-    
 }
